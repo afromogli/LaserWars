@@ -312,7 +312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9578813bd6a628043862d58550c8b4f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LerpSpeed: 10
   TargetObject: {fileID: 2124104353}
 --- !u!1001 &1574134801
 PrefabInstance:
@@ -400,6 +399,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e621b9967924dba48a7559a5702788a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AsteroidPrefab: {fileID: 1822345149752838, guid: 45b62242ff99b0a48a47f713cd6d1687, type: 3}
+  Spacing: 50
+  RandomSpacing: 10
+  WorldCenterPoint: {x: 0, y: 0, z: 0}
+  ObjectsPerSide: 10
 --- !u!4 &1807151906
 Transform:
   m_ObjectHideFlags: 0
