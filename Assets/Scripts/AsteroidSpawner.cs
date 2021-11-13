@@ -69,9 +69,10 @@ public class AsteroidSpawner : MonoBehaviour
                     position.z = (WorldCenterPoint.z - halfSideLength) + z * Spacing + (Random.value * RandomSpacing);
                     gameObject.transform.position = position;
 
-                    Random.InitState(System.DateTime.Now.Millisecond);
-                }                    
-                // TODO: add random rotation?
+                    Random.InitState((int)System.DateTime.Now.Ticks + z + x + y);
+
+                    gameObject.transform.Rotate(Random.value * 360, Random.value * 360, 0);
+                }
             }
         }
 
