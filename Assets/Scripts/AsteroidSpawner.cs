@@ -66,7 +66,7 @@ public class AsteroidSpawner : MonoBehaviour
                     gameObject.SetActive(true);
                     position.x = (WorldCenterPoint.x - halfSideLength) + x * Spacing + (Random.value * RandomSpacing);
                     position.y = (WorldCenterPoint.y - halfSideLength) + y * Spacing + (Random.value * RandomSpacing);
-                    position.z = (WorldCenterPoint.z - halfSideLength) + x * Spacing + (Random.value * RandomSpacing);
+                    position.z = (WorldCenterPoint.z - halfSideLength) + z * Spacing + (Random.value * RandomSpacing);
                     gameObject.transform.position = position;
 
                     Random.InitState(System.DateTime.Now.Millisecond);
