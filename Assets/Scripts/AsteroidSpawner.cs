@@ -53,9 +53,7 @@ public class AsteroidSpawner : MonoBehaviour
         float sideLengthPerLayer = Spacing * ObjectsPerSide;
         float halfSideLength = sideLengthPerLayer / 2;
 
-        Debug.Log("sideLengthPerLayer: " + sideLengthPerLayer);
-        Debug.Log("halfSideLength: " + halfSideLength);
-        Debug.Log("ObjectsPerSide: " + ObjectsPerSide);
+        Debug.Log("total number of objects: " + ObjectsPerSide * ObjectsPerSide * ObjectsPerSide);
 
         Vector3 position = Vector3.zero;
         // Bottom layer to top layer
