@@ -389,7 +389,9 @@ MonoBehaviour:
   Spacing: 300
   RandomSpacing: 150
   WorldCenterPoint: {x: 0, y: 0, z: 0}
-  ObjectsPerSide: 10
+  ObjectsPerSide: 15
+  ScalingMinSize: 1
+  ScalingMaxSize: 10
 --- !u!4 &1807151906
 Transform:
   m_ObjectHideFlags: 0

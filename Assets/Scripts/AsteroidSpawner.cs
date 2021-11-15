@@ -19,6 +19,9 @@ public class AsteroidSpawner : MonoBehaviour
 
     private ObjectPool objectPool;
 
+    public float ScalingMinSize = 1f;
+    public float ScalingMaxSize = 3f;
+
     //private GameObject[] activeAsteroids;
 
     // Start is called before the first frame update
@@ -72,6 +75,10 @@ public class AsteroidSpawner : MonoBehaviour
                     Random.InitState((int)System.DateTime.Now.Ticks + z + x + y);
 
                     gameObject.transform.Rotate(Random.value * 360, Random.value * 360, 0);
+
+                    float randomScaleSize = Random.Range(ScalingMinSize, ScalingMaxSize);
+
+                    gameObject.transform.localScale = new Vector3(randomScaleSize, randomScaleSize, randomScaleSize);
                 }
             }
         }
