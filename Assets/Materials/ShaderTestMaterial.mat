@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PulseWeapon
-  m_Shader: {fileID: 4800000, guid: d501ca37b1a6fe444b438aee61333672, type: 3}
+  m_Name: ShaderTestMaterial
+  m_Shader: {fileID: 4800000, guid: 139640382237d7d4abf0766deb619e0e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

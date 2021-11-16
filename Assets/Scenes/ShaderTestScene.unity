@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 186857511}
   - component: {fileID: 186857510}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Test cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
