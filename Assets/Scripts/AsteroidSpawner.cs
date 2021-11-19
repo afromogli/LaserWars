@@ -4,25 +4,14 @@ using UnityEngine;
 public class AsteroidSpawner : MonoBehaviour
 {
     public GameObject AsteroidPrefab;
-
     public float Spacing;
-
     public float RandomSpacing;
-
     public Vector3 WorldCenterPoint;
-
-    //public float CubeSideLength;
-
-    //public int AsteroidCount;
-
     public int ObjectsPerSide;
-
-    private ObjectPool objectPool;
-
     public float ScalingMinSize = 1f;
     public float ScalingMaxSize = 3f;
 
-    //private GameObject[] activeAsteroids;
+    private ObjectPool objectPool;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +19,6 @@ public class AsteroidSpawner : MonoBehaviour
         int objectCount = ObjectsPerSide * ObjectsPerSide * ObjectsPerSide;
         Debug.Log("objectCount: " + objectCount);
         objectPool = new ObjectPool(objectCount, () => { return Instantiate<GameObject>(AsteroidPrefab); });
-        //activeAsteroids = new GameObject[AsteroidCount];
-
         Spawn();
     }
 
