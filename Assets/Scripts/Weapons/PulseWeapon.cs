@@ -35,6 +35,8 @@ public class PulseWeapon : MonoBehaviour
         {
             SpawnProjectile();
             currentCooldown = FireCooldown;
+
+            Debug.Log("Projectile spawned");
         }
 
         Vector3 forward = gameObject.transform.forward;
@@ -44,7 +46,9 @@ public class PulseWeapon : MonoBehaviour
         {
             projectile.CurrentSpeed += Acceleration * Time.deltaTime;
             projectile.CurrentSpeed = Mathf.Clamp(projectile.CurrentSpeed, 0, Speed);
-            projectile.GameObject.transform.position += forward * projectile.CurrentSpeed * Time.deltaTime;
+            projectile.GameObject.transform.position += forward * projectile.CurrentSpeed; //* Time.deltaTime;
+
+            Debug.Log(projectile.GameObject.transform.position);
 
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
@@ -61,8 +65,12 @@ public class PulseWeapon : MonoBehaviour
     private void SpawnProjectile()
     {
         PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+        GameObject gameObject = newProjectile.GameObject;
+        gameObject.SetActive(true);
+        gameObject.transform.position = gameObject.transform.position;
+        gameObject.transform.forward = gameObject.transform.forward;
 
-        activeProjectiles.Add(newProjectile);
+        activeProjectiles.Add(newProjectile);        
         // TODO: how to handle collisions? Here?
     }
 }
