@@ -1,4 +1,5 @@
 using Assets.Scripts.Common;
+using Assets.Scripts.Weapons;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,34 +9,60 @@ public class PulseWeapon : MonoBehaviour
     public AudioClip PulseSound;
     public float Speed, Acceleration;
     public int MaxProjectileCount = 500;
-    private ObjectPool pulseWeaponPool;
-    private List<GameObject> activeProjectiles;
+    public float FireCooldown = 1f;
+    private float WorldOutOfBounds = 10000f;
 
+
+    private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
+    private List<PulseWeaponProjectile> activeProjectiles;
+    private float currentCooldown;
+    
     // Start is called before the first frame update
     void Start()
     {
-        pulseWeaponPool = new ObjectPool(MaxProjectileCount, () => {
-            return Instantiate<GameObject>(PulseWeaponPrefab);
+        pulseWeaponPool = new ObjectPool<PulseWeaponProjectile>(MaxProjectileCount, () => {
+            return new PulseWeaponProjectile(() => { return Instantiate(PulseWeaponPrefab); });
         });
-        activeProjectiles = new List<GameObject>(MaxProjectileCount);
+        activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
+        currentCooldown = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Fire1") > 0)
+        currentCooldown -= Time.deltaTime;
+        if (Input.GetAxis("Fire1") > 0 && currentCooldown <= 0)
         {
             SpawnProjectile();
+            currentCooldown = FireCooldown;
+        }
+
+        Vector3 forward = gameObject.transform.forward;
+
+        List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
+        foreach (PulseWeaponProjectile projectile in activeProjectiles)
+        {
+            projectile.CurrentSpeed += Acceleration * Time.deltaTime;
+            projectile.CurrentSpeed = Mathf.Clamp(projectile.CurrentSpeed, 0, Speed);
+            projectile.GameObject.transform.position += forward * projectile.CurrentSpeed * Time.deltaTime;
+
+            if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
+            {
+                projectilesToDisable.Add(projectile);
+                projectile.GameObject.SetActive(false);
+            }
+        }
+        foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
+        {
+            activeProjectiles.Remove(disabledProjectile);
         }
     }
 
     private void SpawnProjectile()
     {
-        GameObject newProjectile = pulseWeaponPool.GetObjectFromPool();
+        PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
 
         activeProjectiles.Add(newProjectile);
-
-        // TODO: how to handle speed and acceleration? Lerp? 
         // TODO: how to handle collisions? Here?
     }
 }

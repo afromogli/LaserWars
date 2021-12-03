@@ -342,8 +342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a20dd6379afee4ba3bcc8f3e02f72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 2731494569033763214, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
+  PulseWeaponPrefab: {fileID: 2731494569033763214, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
   PulseSound: {fileID: 8300000, guid: 3b7fe999ba2d8af4e9d58aec2bff4fba, type: 3}
+  Speed: 0
+  Acceleration: 0
+  MaxProjectileCount: 500
 --- !u!1001 &1574134801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -539,60 +542,3 @@ MonoBehaviour:
   LookRateSpeed: 90
   RollSpeed: 90
   RollAcceleration: 3.5
---- !u!1001 &2731494569821425655
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763210, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2731494569033763214, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
-      propertyPath: m_Name
-      value: PulseProjectile
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
