@@ -25,7 +25,17 @@ public class PulseWeapon : MonoBehaviour
         });
         activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
         currentCooldown = 0;
+
+        // TEMP
+        PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+        GameObject gameObject = newProjectile.GameObject;
+        gameObject.SetActive(true);
+        gameObject.transform.position = gameObject.transform.position;
+        gameObject.transform.forward = gameObject.transform.forward;
+        testProjectile = newProjectile;
     }
+
+    private PulseWeaponProjectile testProjectile;
 
     // Update is called once per frame
     void Update()
@@ -48,8 +58,6 @@ public class PulseWeapon : MonoBehaviour
             projectile.CurrentSpeed = Mathf.Clamp(projectile.CurrentSpeed, 0, Speed);
             projectile.GameObject.transform.position += forward * projectile.CurrentSpeed; //* Time.deltaTime;
 
-            Debug.Log(projectile.GameObject.transform.position);
-
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
                 projectilesToDisable.Add(projectile);
@@ -60,15 +68,20 @@ public class PulseWeapon : MonoBehaviour
         {
             activeProjectiles.Remove(disabledProjectile);
         }
+
+        testProjectile.GameObject.transform.position = gameObject.transform.position + (gameObject.transform.forward * 10);
+        testProjectile.GameObject.transform.forward = gameObject.transform.forward;
+        testProjectile.GameObject.transform.rotation = gameObject.transform.rotation;
     }
 
     private void SpawnProjectile()
     {
         PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
-        GameObject gameObject = newProjectile.GameObject;
-        gameObject.SetActive(true);
-        gameObject.transform.position = gameObject.transform.position;
-        gameObject.transform.forward = gameObject.transform.forward;
+        GameObject projGameObj = newProjectile.GameObject;
+        projGameObj.SetActive(true);
+        projGameObj.transform.position = gameObject.transform.position;
+        projGameObj.transform.rotation = gameObject.transform.rotation;
+        projGameObj.transform.forward = gameObject.transform.forward;
 
         activeProjectiles.Add(newProjectile);        
         // TODO: how to handle collisions? Here?

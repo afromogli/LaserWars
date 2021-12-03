@@ -1,8 +1,5 @@
 using Assets.Scripts.Common;
-using System;
 using UnityEngine;
-
-
 
 public class AsteroidSpawner : MonoBehaviour
 {
@@ -28,9 +25,7 @@ public class AsteroidSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
-
 
     private void Spawn()
     {
@@ -56,16 +51,16 @@ public class AsteroidSpawner : MonoBehaviour
                     PooledGameObject pooledGameObject = objectPool.GetObjectFromPool();
                     GameObject gameObject = pooledGameObject.GameObject;
                     gameObject.SetActive(true);
-                    position.x = (WorldCenterPoint.x - halfSideLength) + x * Spacing + (UnityEngine.Random.value * RandomSpacing);
-                    position.y = (WorldCenterPoint.y - halfSideLength) + y * Spacing + (UnityEngine.Random.value * RandomSpacing);
-                    position.z = (WorldCenterPoint.z - halfSideLength) + z * Spacing + (UnityEngine.Random.value * RandomSpacing);
+                    position.x = (WorldCenterPoint.x - halfSideLength) + x * Spacing + (Random.value * RandomSpacing);
+                    position.y = (WorldCenterPoint.y - halfSideLength) + y * Spacing + (Random.value * RandomSpacing);
+                    position.z = (WorldCenterPoint.z - halfSideLength) + z * Spacing + (Random.value * RandomSpacing);
                     gameObject.transform.position = position;
 
-                    UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks + z + x + y);
+                    Random.InitState((int)System.DateTime.Now.Ticks + z + x + y);
 
-                    gameObject.transform.Rotate(UnityEngine.Random.value * 360, UnityEngine.Random.value * 360, 0);
+                    gameObject.transform.Rotate(Random.value * 360, Random.value * 360, 0);
 
-                    float randomScaleSize = UnityEngine.Random.Range(ScalingMinSize, ScalingMaxSize);
+                    float randomScaleSize = Random.Range(ScalingMinSize, ScalingMaxSize);
 
                     gameObject.transform.localScale = new Vector3(randomScaleSize, randomScaleSize, randomScaleSize);
                 }
