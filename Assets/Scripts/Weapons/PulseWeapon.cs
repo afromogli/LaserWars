@@ -27,15 +27,15 @@ public class PulseWeapon : MonoBehaviour
         currentCooldown = 0;
 
         // TEMP
-        PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
-        GameObject gameObject = newProjectile.GameObject;
-        gameObject.SetActive(true);
-        gameObject.transform.position = gameObject.transform.position;
-        gameObject.transform.forward = gameObject.transform.forward;
-        testProjectile = newProjectile;
+        //PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+        //GameObject gameObject = newProjectile.GameObject;
+        //gameObject.SetActive(true);
+        //gameObject.transform.position = gameObject.transform.position;
+        //gameObject.transform.forward = gameObject.transform.forward;
+        //testProjectile = newProjectile;
     }
 
-    private PulseWeaponProjectile testProjectile;
+    //private PulseWeaponProjectile testProjectile;
 
     // Update is called once per frame
     void Update()
@@ -69,9 +69,10 @@ public class PulseWeapon : MonoBehaviour
             activeProjectiles.Remove(disabledProjectile);
         }
 
-        testProjectile.GameObject.transform.position = gameObject.transform.position + (gameObject.transform.forward * 10);
-        testProjectile.GameObject.transform.forward = gameObject.transform.forward;
-        testProjectile.GameObject.transform.rotation = gameObject.transform.rotation;
+        //testProjectile.GameObject.transform.position = gameObject.transform.position + (gameObject.transform.forward * 10);
+        //testProjectile.GameObject.transform.forward = gameObject.transform.forward;
+        //// TODO: this does not seem to work, want to rotate projectile 90 degrees "forwards"
+        //testProjectile.GameObject.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
     }
 
     private void SpawnProjectile()
@@ -80,7 +81,8 @@ public class PulseWeapon : MonoBehaviour
         GameObject projGameObj = newProjectile.GameObject;
         projGameObj.SetActive(true);
         projGameObj.transform.position = gameObject.transform.position;
-        projGameObj.transform.rotation = gameObject.transform.rotation;
+        // rotate projectile 90 degrees "forwards"
+        projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
         projGameObj.transform.forward = gameObject.transform.forward;
 
         activeProjectiles.Add(newProjectile);        
