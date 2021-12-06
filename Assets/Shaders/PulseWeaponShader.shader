@@ -50,7 +50,8 @@ Shader "Custom/PulseWeaponShader"
 
                 // sample the texture
                 //fixed4 col = tex2D(_MainTex, sampleTexPosition);
-                float4 color = float4(0, 0, 1 * (_Time[1] % 1), 0);
+                float4 color = float4(0, 0, 1, 0);
+                //float4 color = float4(0, 0, 1 * (_Time[1] % 1), 0);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, color);
                 return color;

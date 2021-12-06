@@ -11,5 +11,10 @@ namespace Assets.Scripts.Weapons
         public PulseWeaponProjectile(Func<GameObject> createGameObjectMethod) : base(createGameObjectMethod)
         {
         }
+
+        public void Reset()
+        {
+            CurrentSpeed = 0f;
+        }
     }
 }

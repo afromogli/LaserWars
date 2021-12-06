@@ -16,7 +16,9 @@ public class PulseWeapon : MonoBehaviour
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
     private float currentCooldown;
-    
+
+    //PulseWeaponProjectile testProjectile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,14 +27,6 @@ public class PulseWeapon : MonoBehaviour
         });
         activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
         currentCooldown = 0;
-
-        // TEMP
-        //PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
-        //GameObject gameObject = newProjectile.GameObject;
-        //gameObject.SetActive(true);
-        //gameObject.transform.position = gameObject.transform.position;
-        //gameObject.transform.forward = gameObject.transform.forward;
-        //testProjectile = newProjectile;
     }
 
     //private PulseWeaponProjectile testProjectile;
@@ -44,24 +38,32 @@ public class PulseWeapon : MonoBehaviour
         if (Input.GetAxis("Fire1") > 0 && currentCooldown <= 0)
         {
             SpawnProjectile();
+
+            //PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+            //GameObject gameObject = newProjectile.GameObject;
+            //gameObject.SetActive(true);
+            //gameObject.transform.position = gameObject.transform.position;
+            //gameObject.transform.forward = gameObject.transform.forward;
+            //testProjectile = newProjectile;
+
             currentCooldown = FireCooldown;
 
             Debug.Log("Projectile spawned");
         }
 
         Vector3 forward = gameObject.transform.forward;
-
         List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
         foreach (PulseWeaponProjectile projectile in activeProjectiles)
         {
-            projectile.CurrentSpeed += Acceleration * Time.deltaTime;
-            projectile.CurrentSpeed = Mathf.Clamp(projectile.CurrentSpeed, 0, Speed);
-            projectile.GameObject.transform.position += forward * projectile.CurrentSpeed; //* Time.deltaTime;
+            projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
+            projectile.GameObject.transform.position += forward * projectile.CurrentSpeed;
+
+            //Debug.Log(projectile.GameObject.transform.position);
 
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
                 projectilesToDisable.Add(projectile);
-                projectile.GameObject.SetActive(false);
+                projectile.Disable();
             }
         }
         foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
@@ -69,10 +71,15 @@ public class PulseWeapon : MonoBehaviour
             activeProjectiles.Remove(disabledProjectile);
         }
 
-        //testProjectile.GameObject.transform.position = gameObject.transform.position + (gameObject.transform.forward * 10);
-        //testProjectile.GameObject.transform.forward = gameObject.transform.forward;
-        //// TODO: this does not seem to work, want to rotate projectile 90 degrees "forwards"
-        //testProjectile.GameObject.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+        //if (testProjectile != null)
+        //{
+        //    testProjectile.CurrentSpeed = Mathf.Lerp(testProjectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
+        //    testProjectile.GameObject.transform.position += forward * testProjectile.CurrentSpeed;
+        //    testProjectile.GameObject.transform.forward = gameObject.transform.forward;
+        //    // TODO: this does not seem to work, want to rotate projectile 90 degrees "forwards"
+        //    testProjectile.GameObject.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+        //}
+     
     }
 
     private void SpawnProjectile()
@@ -81,9 +88,9 @@ public class PulseWeapon : MonoBehaviour
         GameObject projGameObj = newProjectile.GameObject;
         projGameObj.SetActive(true);
         projGameObj.transform.position = gameObject.transform.position;
+        projGameObj.transform.forward = gameObject.transform.forward;
         // rotate projectile 90 degrees "forwards"
         projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
-        projGameObj.transform.forward = gameObject.transform.forward;
 
         activeProjectiles.Add(newProjectile);        
         // TODO: how to handle collisions? Here?

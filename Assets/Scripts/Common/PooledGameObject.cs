@@ -11,5 +11,10 @@ namespace Assets.Scripts.Common
         {
             GameObject = createGameObjectMethod();
         }
+
+        public void Disable()
+        {
+            GameObject.SetActive(false);
+        }
     }
 }
