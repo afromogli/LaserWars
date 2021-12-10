@@ -12,8 +12,9 @@ namespace Assets.Scripts.Weapons
         {
         }
 
-        public void Reset()
+        public new void Disable()
         {
+            base.Disable();
             CurrentSpeed = 0f;
         }
     }

@@ -58,7 +58,10 @@ public class PulseWeapon : MonoBehaviour
             projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
             projectile.GameObject.transform.position += forward * projectile.CurrentSpeed;
 
-            //Debug.Log(projectile.GameObject.transform.position);
+            //if (projectile.CurrentSpeed < (Speed / 2f))
+            //{
+            //    Debug.Log(projectile.CurrentSpeed);
+            //}
 
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
@@ -92,7 +95,7 @@ public class PulseWeapon : MonoBehaviour
         // rotate projectile 90 degrees "forwards"
         projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
-        activeProjectiles.Add(newProjectile);        
+        activeProjectiles.Add(newProjectile);
         // TODO: how to handle collisions? Here?
     }
 }

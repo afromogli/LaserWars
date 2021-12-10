@@ -12,7 +12,7 @@ namespace Assets.Scripts.Common
             GameObject = createGameObjectMethod();
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
             GameObject.SetActive(false);
         }
