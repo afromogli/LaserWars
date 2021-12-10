@@ -17,8 +17,6 @@ public class PulseWeapon : MonoBehaviour
     private List<PulseWeaponProjectile> activeProjectiles;
     private float currentCooldown;
 
-    //PulseWeaponProjectile testProjectile;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -38,17 +36,8 @@ public class PulseWeapon : MonoBehaviour
         if (Input.GetAxis("Fire1") > 0 && currentCooldown <= 0)
         {
             SpawnProjectile();
-
-            //PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
-            //GameObject gameObject = newProjectile.GameObject;
-            //gameObject.SetActive(true);
-            //gameObject.transform.position = gameObject.transform.position;
-            //gameObject.transform.forward = gameObject.transform.forward;
-            //testProjectile = newProjectile;
-
             currentCooldown = FireCooldown;
-
-            Debug.Log("Projectile spawned");
+            //Debug.Log("Projectile spawned");
         }
 
         Vector3 forward = gameObject.transform.forward;
@@ -57,11 +46,6 @@ public class PulseWeapon : MonoBehaviour
         {
             projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
             projectile.GameObject.transform.position += forward * projectile.CurrentSpeed;
-
-            //if (projectile.CurrentSpeed < (Speed / 2f))
-            //{
-            //    Debug.Log(projectile.CurrentSpeed);
-            //}
 
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
@@ -72,17 +56,7 @@ public class PulseWeapon : MonoBehaviour
         foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
         {
             activeProjectiles.Remove(disabledProjectile);
-        }
-
-        //if (testProjectile != null)
-        //{
-        //    testProjectile.CurrentSpeed = Mathf.Lerp(testProjectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
-        //    testProjectile.GameObject.transform.position += forward * testProjectile.CurrentSpeed;
-        //    testProjectile.GameObject.transform.forward = gameObject.transform.forward;
-        //    // TODO: this does not seem to work, want to rotate projectile 90 degrees "forwards"
-        //    testProjectile.GameObject.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
-        //}
-     
+        }     
     }
 
     private void SpawnProjectile()
