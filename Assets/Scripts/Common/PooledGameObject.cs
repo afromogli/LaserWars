@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Common
 {
-    public class PooledGameObject : IObjectPoolItem
+    public class PooledGameObject : IPooledObject
     {
         public GameObject GameObject { get; set; }
 

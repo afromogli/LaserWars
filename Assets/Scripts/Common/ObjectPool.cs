@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Common
 {
-    public class ObjectPool<T> where T : IObjectPoolItem
+    public class ObjectPool<T> where T : IPooledObject
     {
         private T[] pooledObjects;
 

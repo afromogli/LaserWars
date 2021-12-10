@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Common
 {
-    public interface IObjectPoolItem
+    public interface IPooledObject
     {
         public GameObject GameObject { get; set; }
 
