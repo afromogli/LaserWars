@@ -15,7 +15,6 @@ public class PulseWeapon : MonoBehaviour
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
     private float currentCooldown;
-    private Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +25,6 @@ public class PulseWeapon : MonoBehaviour
         });
         activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
         currentCooldown = 0;
-        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -38,7 +36,6 @@ public class PulseWeapon : MonoBehaviour
             SpawnProjectile();
             currentCooldown = FireCooldown;
             //Debug.Log("Projectile spawned");
-
         }
 
         //Vector3 forward = gameObject.transform.forward;
@@ -70,6 +67,7 @@ public class PulseWeapon : MonoBehaviour
 
         // calc new forward vector based on mouse coordinates
         Vector3 mousePos = Input.mousePosition;
+        var cam = Camera.main;
         Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
         
         // NOTE: this seems to be correct
@@ -84,6 +82,7 @@ public class PulseWeapon : MonoBehaviour
 
     void OnGUI()
     {
+        Camera cam = Camera.main;
         Vector3 mousePos = Input.mousePosition;
         Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
 
@@ -96,6 +95,7 @@ public class PulseWeapon : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        Camera cam = Camera.main;
         Vector3 mousePos = Input.mousePosition;
         Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
         // Draws a blue line from this transform to the target
