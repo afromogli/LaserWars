@@ -27,8 +27,6 @@ public class PulseWeapon : MonoBehaviour
         currentCooldown = 0;
     }
 
-    //private PulseWeaponProjectile testProjectile;
-
     // Update is called once per frame
     void Update()
     {
@@ -56,7 +54,9 @@ public class PulseWeapon : MonoBehaviour
         foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
         {
             activeProjectiles.Remove(disabledProjectile);
-        }     
+        }
+
+        // TODO: how to handle collisions? Here?
     }
 
     private void SpawnProjectile()
@@ -70,6 +70,5 @@ public class PulseWeapon : MonoBehaviour
         projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
         activeProjectiles.Add(newProjectile);
-        // TODO: how to handle collisions? Here?
     }
 }
