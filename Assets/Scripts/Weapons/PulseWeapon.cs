@@ -63,13 +63,13 @@ public class PulseWeapon : MonoBehaviour
         GameObject projGameObj = newProjectile.GameObject;
         projGameObj.SetActive(true);
         projGameObj.transform.position = gameObject.transform.position;
-        projGameObj.transform.forward = gameObject.transform.forward;
+        //projGameObj.transform.forward = gameObject.transform.forward;
 
         // calc new forward vector based on mouse coordinates
         Vector3 mousePos = Input.mousePosition;
         var cam = Camera.main;
         Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
-        
+
         // NOTE: this seems to be correct
         Vector3 newForward = (point - gameObject.transform.position).normalized;
         projGameObj.transform.forward = newForward;
