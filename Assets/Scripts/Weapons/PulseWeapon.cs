@@ -12,19 +12,21 @@ public class PulseWeapon : MonoBehaviour
     public float FireCooldown = 1f;
     private float WorldOutOfBounds = 10000f;
 
-
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
     private float currentCooldown;
+    private Camera cam;
 
     // Start is called before the first frame update
     void Start()
     {
-        pulseWeaponPool = new ObjectPool<PulseWeaponProjectile>(MaxProjectileCount, () => {
+        pulseWeaponPool = new ObjectPool<PulseWeaponProjectile>(MaxProjectileCount, () =>
+        {
             return new PulseWeaponProjectile(() => { return Instantiate(PulseWeaponPrefab); });
         });
         activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
         currentCooldown = 0;
+        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -36,6 +38,7 @@ public class PulseWeapon : MonoBehaviour
             SpawnProjectile();
             currentCooldown = FireCooldown;
             //Debug.Log("Projectile spawned");
+
         }
 
         Vector3 forward = gameObject.transform.forward;
@@ -66,9 +69,32 @@ public class PulseWeapon : MonoBehaviour
         projGameObj.SetActive(true);
         projGameObj.transform.position = gameObject.transform.position;
         projGameObj.transform.forward = gameObject.transform.forward;
+
+        // calc new forward vector based on mouse coordinates
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
+        
+
+
         // rotate projectile 90 degrees "forwards"
         projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
+
+        //Rigidbody rigidbody = projGameObj.GetComponent<Rigidbody>();
+        //rigidbody.AddForce(gameObject.transform.forward * 100, ForceMode.Force);
+
         activeProjectiles.Add(newProjectile);
+    }
+
+    void OnGUI()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
+
+        GUILayout.BeginArea(new Rect(20, 20, 250, 120));
+        GUILayout.Label("Screen pixels: " + cam.pixelWidth + ":" + cam.pixelHeight);
+        GUILayout.Label("Mouse position: " + mousePos);
+        GUILayout.Label("World position: " + point.ToString("F3"));
+        GUILayout.EndArea();
     }
 }

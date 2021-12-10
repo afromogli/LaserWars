@@ -17,7 +17,7 @@ namespace Assets.Scripts
                 Debug.Log("Asteroid destroyed");
                 //Instantiate(ExplosionPrefab, position, rotation);
                 Destroy(gameObject);
-            }           
+            }
         }
     }
 }
