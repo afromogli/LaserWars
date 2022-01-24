@@ -10,7 +10,7 @@ public class PulseWeapon : MonoBehaviour
     public float Speed, Acceleration;
     public int MaxProjectileCount = 500;
     public float FireCooldown = 1f;
-    private float WorldOutOfBounds = 10000f;
+    private float WorldOutOfBounds = 5000f;
 
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
@@ -74,8 +74,11 @@ public class PulseWeapon : MonoBehaviour
         Vector3 newForward = (point - gameObject.transform.position).normalized;
         projGameObj.transform.forward = newForward;
 
-        // TODO: fix rotation
-        projGameObj.transform.rotation.SetLookRotation(newForward);// Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+        projGameObj.transform.position += newForward * 30.0f; // Spawn a little bit in front of ship
+
+        // TODO: fix rotation, but the problem seems to be that the initial rotation of the object is wrong... HOW TO FIX?!
+        projGameObj.transform.rotation = gameObject.transform.rotation;
+        //projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
         activeProjectiles.Add(newProjectile);
     }
@@ -101,5 +104,10 @@ public class PulseWeapon : MonoBehaviour
         // Draws a blue line from this transform to the target
         Gizmos.color = Color.green;
         Gizmos.DrawLine(gameObject.transform.position, point);
+
+        Vector3 newForward = (point - gameObject.transform.position).normalized;
+        newForward = newForward * 100.0f;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(gameObject.transform.position, newForward);
     }
 }
