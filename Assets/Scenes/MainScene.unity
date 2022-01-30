@@ -344,7 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PulseWeaponPrefab: {fileID: 2731494569033763214, guid: 49f8ea1d4e429304c9400d379a86abf8, type: 3}
   PulseSound: {fileID: 8300000, guid: 3b7fe999ba2d8af4e9d58aec2bff4fba, type: 3}
-  Speed: 10
+  Speed: 20
   Acceleration: 2
   MaxProjectileCount: 500
   FireCooldown: 1

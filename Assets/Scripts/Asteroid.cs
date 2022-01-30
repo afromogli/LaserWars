@@ -6,14 +6,10 @@ namespace Assets.Scripts
     {
         public Transform ExplosionPrefab;
 
-        void OnCollisionEnter(Collision collision)
+        void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.tag == "PulseProjectile")
+            if (other.gameObject.tag == "PulseProjectile")
             {
-                ContactPoint contact = collision.contacts[0];
-                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
-                Vector3 position = contact.point;
-
                 Debug.Log("Asteroid destroyed");
                 //Instantiate(ExplosionPrefab, position, rotation);
                 Destroy(gameObject);
