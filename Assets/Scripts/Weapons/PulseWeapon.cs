@@ -6,7 +6,7 @@ using UnityEngine;
 public class PulseWeapon : MonoBehaviour
 {
     public GameObject PulseWeaponPrefab;
-    public AudioClip PulseSound;
+    private AudioSource PulseSoundAudioSource;
     public float Speed, Acceleration;
     public int MaxProjectileCount = 500;
     public float FireCooldown = 1f;
@@ -26,6 +26,7 @@ public class PulseWeapon : MonoBehaviour
         });
         activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
         currentCooldown = 0;
+        PulseSoundAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -75,6 +76,11 @@ public class PulseWeapon : MonoBehaviour
         projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
         activeProjectiles.Add(newProjectile);
+
+        if (PulseSoundAudioSource != null)
+        {
+            PulseSoundAudioSource.Play();
+        }
     }
 
     void OnGUI()
