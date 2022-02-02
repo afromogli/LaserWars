@@ -7,7 +7,7 @@ namespace Assets.Scripts.Weapons
     public class PulseWeaponProjectile : PooledGameObject
     {
         public float CurrentSpeed;
-        public Vector3 TempForward { get; set; }
+        public Vector3 Forward { get; set; }
 
         public PulseWeaponProjectile(Func<GameObject> createGameObjectMethod) : base(createGameObjectMethod)
         {

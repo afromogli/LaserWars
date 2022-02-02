@@ -11,6 +11,7 @@ public class PulseWeapon : MonoBehaviour
     public int MaxProjectileCount = 500;
     public float FireCooldown = 1f;
     private float WorldOutOfBounds = 5000f;
+    private float ProjectileSpawnOffset = 5f;
 
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
@@ -35,15 +36,13 @@ public class PulseWeapon : MonoBehaviour
         {
             SpawnProjectile();
             currentCooldown = FireCooldown;
-            //Debug.Log("Projectile spawned");
         }
 
-        //Vector3 forward = gameObject.transform.forward;
         List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
         foreach (PulseWeaponProjectile projectile in activeProjectiles)
         {
             projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
-            projectile.GameObject.transform.position += projectile.GameObject.transform.forward * projectile.CurrentSpeed;
+            projectile.GameObject.transform.position += projectile.Forward * projectile.CurrentSpeed;
 
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
@@ -63,22 +62,17 @@ public class PulseWeapon : MonoBehaviour
         GameObject projGameObj = newProjectile.GameObject;
         projGameObj.SetActive(true);
         projGameObj.transform.position = gameObject.transform.position;
-        //projGameObj.transform.forward = gameObject.transform.forward;
 
         // calc new forward vector based on mouse coordinates
         Vector3 mousePos = Input.mousePosition;
         var cam = Camera.main;
         Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
 
-        // NOTE: this seems to be correct
-        Vector3 newForward = (point - gameObject.transform.position).normalized;
-        projGameObj.transform.forward = newForward;
-
-        projGameObj.transform.position += newForward * 30.0f; // Spawn a little bit in front of ship
-
-        // TODO: fix rotation, but the problem seems to be that the initial rotation of the object is wrong... HOW TO FIX?!
-        projGameObj.transform.rotation = gameObject.transform.rotation;
-        //projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+        // Store forward vector in projectile since it is overridden by the rotation set later on if saved in transform object
+        newProjectile.Forward = (point - gameObject.transform.position).normalized;
+        projGameObj.transform.position += newProjectile.Forward * ProjectileSpawnOffset; // Spawn a little bit in front of ship
+        
+        projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
 
         activeProjectiles.Add(newProjectile);
     }
