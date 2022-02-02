@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Asteroid
   - PulseProjectile
+  - AsteroidSpawner
   layers:
   - Default
   - TransparentFX

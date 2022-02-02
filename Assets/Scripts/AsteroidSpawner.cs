@@ -22,11 +22,6 @@ public class AsteroidSpawner : MonoBehaviour
         Spawn();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     private void Spawn()
     {
         /////////////////////////////////////////////////

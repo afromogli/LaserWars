@@ -18,7 +18,7 @@ public class PulseWeapon : MonoBehaviour
     private float currentCooldown;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         pulseWeaponPool = new ObjectPool<PulseWeaponProjectile>(MaxProjectileCount, () =>
         {
@@ -30,7 +30,7 @@ public class PulseWeapon : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         currentCooldown -= Time.deltaTime;
         if (Input.GetAxis("Fire1") > 0 && currentCooldown <= 0)
