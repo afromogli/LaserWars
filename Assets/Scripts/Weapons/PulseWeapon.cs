@@ -32,6 +32,26 @@ public class PulseWeapon : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+        //List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
+        //foreach (PulseWeaponProjectile projectile in activeProjectiles)
+        //{
+        //    projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
+        //    projectile.GameObject.transform.position += projectile.Forward * projectile.CurrentSpeed;
+
+        //    if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
+        //    {
+        //        projectilesToDisable.Add(projectile);
+        //        projectile.Disable();
+        //    }
+        //}
+        //foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
+        //{
+        //    activeProjectiles.Remove(disabledProjectile);
+        //}
+    }
+
+    public void FixedUpdate()
+    {
         currentCooldown -= Time.deltaTime;
         if (Input.GetAxis("Fire1") > 0 && currentCooldown <= 0)
         {
@@ -39,49 +59,61 @@ public class PulseWeapon : MonoBehaviour
             currentCooldown = FireCooldown;
         }
 
-        List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
-        foreach (PulseWeaponProjectile projectile in activeProjectiles)
-        {
-            projectile.CurrentSpeed = Mathf.Lerp(projectile.CurrentSpeed, Speed, Acceleration * Time.deltaTime);
-            projectile.GameObject.transform.position += projectile.Forward * projectile.CurrentSpeed;
+        //// Bit shift the index of the layer (8) to get a bit mask
+        //int layerMask = 1 << 8;
 
-            if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
-            {
-                projectilesToDisable.Add(projectile);
-                projectile.Disable();
-            }
-        }
-        foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
-        {
-            activeProjectiles.Remove(disabledProjectile);
-        }
+        //// This would cast rays only against colliders in layer 8.
+        //// But instead we want to collide against everything except layer 8. The ~ operator does this, it inverts a bitmask.
+        //layerMask = ~layerMask;
     }
 
     private void SpawnProjectile()
     {
-        PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
-        GameObject projGameObj = newProjectile.GameObject;
-        projGameObj.SetActive(true);
-        projGameObj.transform.position = gameObject.transform.position;
-
+        RaycastHit hit;
         // calc new forward vector based on mouse coordinates
         Vector3 mousePos = Input.mousePosition;
-        var cam = Camera.main;
-        Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
+        Camera cam = Camera.main;
+        Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, transform.position.z));
 
         // Store forward vector in projectile since it is overridden by the rotation set later on if saved in transform object
-        newProjectile.Forward = (point - gameObject.transform.position).normalized;
-        projGameObj.transform.position += newProjectile.Forward * ProjectileSpawnOffset; // Spawn a little bit in front of ship
-        
-        projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+        Vector3 forward = gameObject.transform.forward.normalized;
+        Vector3 startPos = point;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(startPos, forward, out hit, float.MaxValue))
+        {
+            Debug.DrawRay(startPos, forward * hit.distance, Color.yellow, 60, false);
+            Debug.Log("Did Hit");
+        }
+        else
+        {
+            Debug.DrawRay(startPos, forward * 10000, Color.white, 60, false);
+            Debug.Log("Did not Hit");
+        }
 
-        activeProjectiles.Add(newProjectile);
+        //PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+        //GameObject projGameObj = newProjectile.GameObject;
+        //projGameObj.SetActive(true);
+        //projGameObj.transform.position = gameObject.transform.position;
+
+        //// calc new forward vector based on mouse coordinates
+        //Vector3 mousePos = Input.mousePosition;
+        //var cam = Camera.main;
+        //Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.farClipPlane));
+
+        //// Store forward vector in projectile since it is overridden by the rotation set later on if saved in transform object
+        //newProjectile.Forward = (point - gameObject.transform.position).normalized;
+        //projGameObj.transform.position += newProjectile.Forward * ProjectileSpawnOffset; // Spawn a little bit in front of ship
+
+        //projGameObj.transform.rotation = Quaternion.AngleAxis(90, gameObject.transform.right) * gameObject.transform.rotation;
+
+        //activeProjectiles.Add(newProjectile);
 
         if (PulseSoundAudioSource != null)
         {
             PulseSoundAudioSource.Play();
         }
     }
+
 
     void OnGUI()
     {
