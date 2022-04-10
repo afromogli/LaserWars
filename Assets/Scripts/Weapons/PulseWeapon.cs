@@ -10,8 +10,8 @@ public class PulseWeapon : MonoBehaviour
     public float Speed, Acceleration;
     public int MaxProjectileCount = 500;
     public float FireCooldown = 1f;
-    private float WorldOutOfBounds = 5000f;
-    private float ProjectileSpawnOffset = 5f;
+    //private float WorldOutOfBounds = 5000f;
+    //private float ProjectileSpawnOffset = 5f;
 
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
@@ -73,20 +73,21 @@ public class PulseWeapon : MonoBehaviour
         // calc new forward vector based on mouse coordinates
         Vector3 mousePos = Input.mousePosition;
         Camera cam = Camera.main;
-        Vector3 point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, transform.position.z));
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        var startPos = cam.ScreenToWorldPoint(Input.mousePosition);
 
         // Store forward vector in projectile since it is overridden by the rotation set later on if saved in transform object
-        Vector3 forward = gameObject.transform.forward.normalized;
-        Vector3 startPos = point;
+        //Vector3 forward = gameObject.transform.forward.normalized;
+        //Vector3 startPos = point;
         // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(startPos, forward, out hit, float.MaxValue))
+        if (Physics.Raycast(ray, out hit, float.MaxValue))
         {
-            Debug.DrawRay(startPos, forward * hit.distance, Color.yellow, 60, false);
+            Debug.DrawRay(startPos, ray.direction * hit.distance, Color.yellow, 60, false);
             Debug.Log("Did Hit");
         }
         else
         {
-            Debug.DrawRay(startPos, forward * 10000, Color.white, 60, false);
+            Debug.DrawRay(startPos, ray.direction * 10000, Color.white, 60, false);
             Debug.Log("Did not Hit");
         }
 
