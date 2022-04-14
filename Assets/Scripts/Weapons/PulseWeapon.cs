@@ -12,7 +12,6 @@ public class PulseWeapon : MonoBehaviour
     public float FireCooldown = 1f;
     public float RayMaxDistance = 10000f;
     private float WorldOutOfBounds = 5000f;
-    //private float ProjectileSpawnOffset = 5f;
 
     private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
     private List<PulseWeaponProjectile> activeProjectiles;
