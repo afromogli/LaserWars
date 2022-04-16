@@ -1,5 +1,4 @@
 using Assets.Scripts.Common;
-using Assets.Scripts.Weapons;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,19 +6,19 @@ public class PulseWeapon : MonoBehaviour
 {
     public GameObject PulseWeaponPrefab;
     private AudioSource PulseSoundAudioSource;
-    public float Speed, Acceleration;
     public int MaxProjectileCount = 500;
-    public float FireCooldown = 1f;
+    public float FireCooldown = 0.5f;
     public float RayMaxDistance = 10000f;
     private float WorldOutOfBounds = 5000f;
+    public float Speed;
 
-    private ObjectPool<PulseWeaponProjectile> pulseWeaponPool;
-    private List<PulseWeaponProjectile> activeProjectiles;
+    private ObjectPool<PooledGameObject> projectilePool;
+    private List<PooledGameObject> activeProjectiles;
     private float currentCooldown;
 
     public PulseWeapon()
     {
-        activeProjectiles = new List<PulseWeaponProjectile>(MaxProjectileCount);
+        activeProjectiles = new List<PooledGameObject>(MaxProjectileCount);
         currentCooldown = 0;
     }
 
@@ -32,8 +31,8 @@ public class PulseWeapon : MonoBehaviour
     // Update is called once per frame
     public void Update()
     { 
-        List<PulseWeaponProjectile> projectilesToDisable = new List<PulseWeaponProjectile>();
-        foreach (PulseWeaponProjectile projectile in activeProjectiles)
+        List<PooledGameObject> projectilesToDisable = new List<PooledGameObject>();
+        foreach (PooledGameObject projectile in activeProjectiles)
         {
             if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
@@ -41,7 +40,7 @@ public class PulseWeapon : MonoBehaviour
                 projectile.Disable();
             }
         }
-        foreach (PulseWeaponProjectile disabledProjectile in projectilesToDisable)
+        foreach (PooledGameObject disabledProjectile in projectilesToDisable)
         {
             activeProjectiles.Remove(disabledProjectile);
         }
@@ -49,11 +48,11 @@ public class PulseWeapon : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (pulseWeaponPool == null)
+        if (projectilePool == null)
         {
-            pulseWeaponPool = new ObjectPool<PulseWeaponProjectile>(MaxProjectileCount, () =>
+            projectilePool = new ObjectPool<PooledGameObject>(MaxProjectileCount, () =>
             {
-                return new PulseWeaponProjectile(() => { return Instantiate(PulseWeaponPrefab); });
+                return new PooledGameObject(() => { return Instantiate(PulseWeaponPrefab); });
             });
         }
         if (PulseSoundAudioSource == null)
@@ -93,13 +92,14 @@ public class PulseWeapon : MonoBehaviour
             hitPosition = startPos + ray.direction * RayMaxDistance;
         }
 
-        PulseWeaponProjectile newProjectile = pulseWeaponPool.GetObjectFromPool();
+        PooledGameObject newProjectile = projectilePool.GetObjectFromPool();
         GameObject projGameObj = newProjectile.GameObject;
         projGameObj.SetActive(true);
         projGameObj.transform.position = transform.position;
         projGameObj.transform.rotation = transform.rotation;
         ShotBehavior shotBehavior = projGameObj.GetComponent<ShotBehavior>();
-        shotBehavior.SetTarget(hitPosition);
+        shotBehavior.Target = hitPosition;
+        shotBehavior.Speed = Speed;
 
         if (PulseSoundAudioSource != null)
         {

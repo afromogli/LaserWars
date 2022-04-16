@@ -2,38 +2,34 @@
 
 public class ShotBehavior : MonoBehaviour {
 
-    public Vector3 target;
-    public GameObject collisionExplosion;
-    public float speed;
+    public Vector3 Target { get; set; }
+    public float Speed { get; set; }
+
+    public GameObject CollisionExplosion;
 
     // Update is called once per frame
     void Update()
     {
-        float step = speed * Time.deltaTime;
+        float step = Speed * Time.deltaTime;
 
-        if (target != null)
+        if (Target != null)
         {
-            if (transform.position == target)
+            if (transform.position == Target)
             {
                 Explode();
                 return;
             }
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            transform.position = Vector3.MoveTowards(transform.position, Target, step);
         }
 
     }
 
-    public void SetTarget(Vector3 target)
-    {
-        this.target = target;
-    }
-
     void Explode()
     {
-        if (collisionExplosion != null)
+        if (CollisionExplosion != null)
         {
             GameObject explosion = (GameObject)Instantiate(
-                collisionExplosion, transform.position, transform.rotation);
+                CollisionExplosion, transform.position, transform.rotation);
             Destroy(gameObject);
             Destroy(explosion, 1f);
         }
