@@ -115,9 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb039d3a64491f4ebfc852d25b5ee70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {x: 0, y: 0, z: 0}
-  collisionExplosion: {fileID: 0}
-  speed: 700
+  CollisionExplosion: {fileID: 1569037081698382576, guid: 594693181d7bb464d828951521023c27, type: 3}
 --- !u!108 &10825254
 Light:
   m_ObjectHideFlags: 0

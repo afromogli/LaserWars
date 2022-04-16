@@ -34,7 +34,7 @@ public class PulseWeapon : MonoBehaviour
         List<PooledGameObject> projectilesToDisable = new List<PooledGameObject>();
         foreach (PooledGameObject projectile in activeProjectiles)
         {
-            if (Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
+            if (!projectile.GameObject.activeInHierarchy || Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
             {
                 projectilesToDisable.Add(projectile);
                 projectile.Disable();

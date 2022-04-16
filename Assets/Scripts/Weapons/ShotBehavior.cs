@@ -28,10 +28,10 @@ public class ShotBehavior : MonoBehaviour {
     {
         if (CollisionExplosion != null)
         {
-            GameObject explosion = (GameObject)Instantiate(
-                CollisionExplosion, transform.position, transform.rotation);
-            Destroy(gameObject);
+            // TODO: use PooledGameObject instead
+            GameObject explosion = (GameObject)Instantiate(CollisionExplosion, transform.position, transform.rotation);
             Destroy(explosion, 1f);
+            gameObject.SetActive(false);
         }
     }
 }
