@@ -6,6 +6,16 @@ public class ShotBehavior : MonoBehaviour {
     public float Speed { get; set; }
 
     public GameObject CollisionExplosion;
+    private AudioSource ExplosionSound;
+
+    public void Start()
+    {
+        GameObject asteroidSpawner = GameObject.FindGameObjectWithTag("AsteroidSpawner");
+        if (asteroidSpawner != null)
+        {
+            ExplosionSound = asteroidSpawner.GetComponent<AudioSource>();
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,6 +41,10 @@ public class ShotBehavior : MonoBehaviour {
             // TODO: use PooledGameObject instead
             GameObject explosion = (GameObject)Instantiate(CollisionExplosion, transform.position, transform.rotation);
             Destroy(explosion, 1f);
+            if (ExplosionSound != null)
+            {
+                ExplosionSound.Play();
+            }
             gameObject.SetActive(false);
         }
     }
