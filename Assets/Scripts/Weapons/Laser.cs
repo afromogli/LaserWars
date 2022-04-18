@@ -41,8 +41,7 @@ public class Laser : MonoBehaviour {
     {
         if (ExplosionSpawner != null)
         {
-            var explosion = ExplosionSpawner.Spawn(transform.position, transform.rotation);
-            explosion.expl
+            ExplosionSpawner.Spawn(transform.position, transform.rotation);
 
             if (ExplosionSound != null)
             {
