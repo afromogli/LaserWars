@@ -1,34 +1,40 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Common
 {
-    public class ObjectPool<T> where T : IPooledObject
+    public class ObjectPool
     {
-        private T[] pooledObjects;
+        private GameObject[] pooledObjects;
 
-        public ObjectPool(int capacity, Func<T> createGameObjectMethod)
+        public ObjectPool(int capacity, Func<GameObject> createGameObjectMethod)
         {
-            pooledObjects = new T[capacity];
+            pooledObjects = new GameObject[capacity];
 
-            T newObject;
+            GameObject newObject;
             for (int i = 0; i < capacity; i++)
             {
                 newObject = createGameObjectMethod();
-                newObject.GameObject.SetActive(false);
+                newObject.SetActive(false);
                 pooledObjects[i] = newObject;
             }
         }
 
-        public T GetObjectFromPool()
+        public GameObject GetObjectFromPool()
         {
             for (int i = 0; i < pooledObjects.Length; i++)
             {
-                if (!pooledObjects[i].GameObject.activeInHierarchy)
+                if (!pooledObjects[i].activeInHierarchy)
                 {
                     return pooledObjects[i];
                 }
             }
-            return default(T);
+            return default(GameObject);
+        }
+
+        public void Release(GameObject obj)
+        {
+            obj.SetActive(false);
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using Assets.Scripts.Common;
+using UnityEngine;
 
-public class ShotBehavior : MonoBehaviour {
+public class Laser : MonoBehaviour {
 
     public Vector3 Target { get; set; }
     public float Speed { get; set; }
 
-    public GameObject CollisionExplosion;
     private AudioSource ExplosionSound;
+    public ExplosionSpawner ExplosionSpawner { get; set; }
+    public ObjectPool LaserPool { get; set; }
 
     public void Start()
     {
@@ -36,16 +39,17 @@ public class ShotBehavior : MonoBehaviour {
 
     void Explode()
     {
-        if (CollisionExplosion != null)
+        if (ExplosionSpawner != null)
         {
-            // TODO: use PooledGameObject instead
-            GameObject explosion = (GameObject)Instantiate(CollisionExplosion, transform.position, transform.rotation);
-            Destroy(explosion, 1f);
+            var explosion = ExplosionSpawner.Spawn(transform.position, transform.rotation);
+            explosion.expl
+
             if (ExplosionSound != null)
             {
                 ExplosionSound.Play();
             }
-            gameObject.SetActive(false);
+
+            LaserPool.Release(gameObject);
         }
     }
 }

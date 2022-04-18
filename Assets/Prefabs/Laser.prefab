@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 554103190418696979}
   - component: {fileID: 10825254}
   m_Layer: 0
-  m_Name: shot_prefab
+  m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,10 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 136330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb039d3a64491f4ebfc852d25b5ee70, type: 3}
+  m_Script: {fileID: 11500000, guid: 89945aa51aab874488e2e2fc10fba649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionExplosion: {fileID: 1569037081698382576, guid: 594693181d7bb464d828951521023c27, type: 3}
+  CollisionExplosion: {fileID: 0}
 --- !u!108 &10825254
 Light:
   m_ObjectHideFlags: 0

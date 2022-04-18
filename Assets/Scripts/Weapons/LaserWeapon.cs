@@ -1,63 +1,66 @@
+using Assets.Scripts;
 using Assets.Scripts.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PulseWeapon : MonoBehaviour
+public class LaserWeapon : MonoBehaviour
 {
-    public GameObject PulseWeaponPrefab;
-    private AudioSource PulseSoundAudioSource;
+    public GameObject LaserPrefab;
+    private AudioSource LaserSound;
     public int MaxProjectileCount = 500;
     public float FireCooldown = 0.5f;
     public float RayMaxDistance = 10000f;
     private float WorldOutOfBounds = 5000f;
     public float Speed;
 
-    private ObjectPool<PooledGameObject> projectilePool;
-    private List<PooledGameObject> activeProjectiles;
+    private ObjectPool laserPool;
+    private List<GameObject> activeLasers;
     private float currentCooldown;
 
-    public PulseWeapon()
+    private ExplosionSpawner explosionSpawner;
+
+    public LaserWeapon()
     {
-        activeProjectiles = new List<PooledGameObject>(MaxProjectileCount);
+        activeLasers = new List<GameObject>(MaxProjectileCount);
         currentCooldown = 0;
     }
 
     // Start is called before the first frame update
     public void Start()
     {
-        
+        ExplosionSpawner[] explSpawners = FindObjectsOfType<ExplosionSpawner>();
+        explosionSpawner = explSpawners[0];
     }
 
     // Update is called once per frame
     public void Update()
     { 
-        List<PooledGameObject> projectilesToDisable = new List<PooledGameObject>();
-        foreach (PooledGameObject projectile in activeProjectiles)
+        List<GameObject> projectilesToDisable = new List<GameObject>();
+        foreach (GameObject projectile in activeLasers)
         {
-            if (!projectile.GameObject.activeInHierarchy || Mathf.Abs(projectile.GameObject.transform.position.magnitude) >= WorldOutOfBounds)
+            if (!projectile.activeInHierarchy || Mathf.Abs(projectile.transform.position.magnitude) >= WorldOutOfBounds)
             {
                 projectilesToDisable.Add(projectile);
-                projectile.Disable();
             }
         }
-        foreach (PooledGameObject disabledProjectile in projectilesToDisable)
+        foreach (GameObject disabledLaser in projectilesToDisable)
         {
-            activeProjectiles.Remove(disabledProjectile);
+            activeLasers.Remove(disabledLaser);
         }
     }
 
     public void FixedUpdate()
     {
-        if (projectilePool == null)
+        if (laserPool == null)
         {
-            projectilePool = new ObjectPool<PooledGameObject>(MaxProjectileCount, () =>
+            laserPool = new ObjectPool(MaxProjectileCount, () =>
             {
-                return new PooledGameObject(() => { return Instantiate(PulseWeaponPrefab); });
+                return Instantiate(LaserPrefab);
             });
         }
-        if (PulseSoundAudioSource == null)
+        if (LaserSound == null)
         {
-            PulseSoundAudioSource = GetComponent<AudioSource>();
+            LaserSound = GetComponent<AudioSource>();
         }
 
         currentCooldown -= Time.deltaTime;
@@ -91,19 +94,20 @@ public class PulseWeapon : MonoBehaviour
 
             hitPosition = startPos + ray.direction * RayMaxDistance;
         }
+        
+        GameObject laserGameObj = laserPool.GetObjectFromPool();
+        laserGameObj.SetActive(true);
+        laserGameObj.transform.position = transform.position;
+        laserGameObj.transform.rotation = transform.rotation;
+        Laser laserScript = laserGameObj.GetComponent<Laser>();
+        laserScript.Target = hitPosition;
+        laserScript.Speed = Speed;
+        laserScript.LaserPool = laserPool;
+        laserScript.ExplosionSpawner = explosionSpawner;
 
-        PooledGameObject newProjectile = projectilePool.GetObjectFromPool();
-        GameObject projGameObj = newProjectile.GameObject;
-        projGameObj.SetActive(true);
-        projGameObj.transform.position = transform.position;
-        projGameObj.transform.rotation = transform.rotation;
-        ShotBehavior shotBehavior = projGameObj.GetComponent<ShotBehavior>();
-        shotBehavior.Target = hitPosition;
-        shotBehavior.Speed = Speed;
-
-        if (PulseSoundAudioSource != null)
+        if (LaserSound != null)
         {
-            PulseSoundAudioSource.Play();
+            LaserSound.Play();
         }
     }
 

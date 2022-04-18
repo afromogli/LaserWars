@@ -11,14 +11,14 @@ public class AsteroidSpawner : MonoBehaviour
     public float ScalingMinSize = 1f;
     public float ScalingMaxSize = 3f;
 
-    private ObjectPool<PooledGameObject> objectPool;
+    private ObjectPool objectPool;
 
     // Start is called before the first frame update
     void Start()
     {
         int objectCount = ObjectsPerSide * ObjectsPerSide * ObjectsPerSide;
         Debug.Log("objectCount: " + objectCount);
-        objectPool = new ObjectPool<PooledGameObject>(objectCount, () => { return new PooledGameObject(() => { return Instantiate(AsteroidPrefab); }); });
+        objectPool = new ObjectPool(objectCount, () => { return Instantiate(AsteroidPrefab); });
         Spawn();
     }
 
@@ -43,8 +43,7 @@ public class AsteroidSpawner : MonoBehaviour
             {
                 for (int z = 0; z < ObjectsPerSide; z++)
                 {
-                    PooledGameObject pooledGameObject = objectPool.GetObjectFromPool();
-                    GameObject gameObject = pooledGameObject.GameObject;
+                    GameObject gameObject = objectPool.GetObjectFromPool();
                     gameObject.SetActive(true);
                     position.x = (WorldCenterPoint.x - halfSideLength) + x * Spacing + (Random.value * RandomSpacing);
                     position.y = (WorldCenterPoint.y - halfSideLength) + y * Spacing + (Random.value * RandomSpacing);
