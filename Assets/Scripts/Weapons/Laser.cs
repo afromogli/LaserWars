@@ -10,6 +10,7 @@ public class Laser : MonoBehaviour {
     private AudioSource ExplosionSound;
     public ExplosionSpawner ExplosionSpawner { get; set; }
     public ObjectPool LaserPool { get; set; }
+    public bool IsAlive { get; set; }
 
     public void Start()
     {
@@ -23,12 +24,17 @@ public class Laser : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (!IsAlive)
+        {
+            return;
+        }
         float step = Speed * Time.deltaTime;
 
         if (Target != null)
         {
             if (transform.position == Target)
             {
+                IsAlive = false;
                 Explode();
                 return;
             }

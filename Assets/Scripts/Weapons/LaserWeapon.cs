@@ -100,6 +100,7 @@ public class LaserWeapon : MonoBehaviour
         laserGameObj.transform.position = transform.position;
         laserGameObj.transform.rotation = transform.rotation;
         Laser laserScript = laserGameObj.GetComponent<Laser>();
+        laserScript.IsAlive = true;
         laserScript.Target = hitPosition;
         laserScript.Speed = Speed;
         laserScript.LaserPool = laserPool;
