@@ -16,7 +16,7 @@ public class Laser : MonoBehaviour {
     {
         GameObject asteroidSpawner = GameObject.FindGameObjectWithTag("AsteroidSpawner");
         if (asteroidSpawner != null)
-        {
+        {   
             ExplosionSound = asteroidSpawner.GetComponent<AudioSource>();
         }
     }
@@ -34,8 +34,9 @@ public class Laser : MonoBehaviour {
         {
             if (transform.position == Target)
             {
-                IsAlive = false;
                 Explode();
+                IsAlive = false;
+                LaserPool.Release(gameObject);
                 return;
             }
             transform.position = Vector3.MoveTowards(transform.position, Target, step);
@@ -53,8 +54,6 @@ public class Laser : MonoBehaviour {
             {
                 ExplosionSound.Play();
             }
-
-            LaserPool.Release(gameObject);
         }
     }
 }

@@ -32,10 +32,13 @@ namespace Assets.Scripts
             Explosion explosionScript = explosionObj.GetComponent<Explosion>();
             explosionScript.ExplosionPool = ObjectPool;
 
-            //ParticleSystem particleSystem = explosionObj.GetComponent<ParticleSystem>();
-            //particleSystem.Stop();
-            //particleSystem.time = 0;
-            //particleSystem.Play();
+            ParticleSystem[] particleSystems = explosionObj.GetComponentsInChildren<ParticleSystem>();
+            foreach (ParticleSystem partSys in particleSystems)
+            {
+                partSys.Stop();
+                partSys.time = 0;
+                partSys.Play();
+            }
 
             return explosionObj;
         }
